@@ -43,11 +43,12 @@ namespace Inlämningsuppgift_2
             Console.WriteLine("6. Check most expensive");
             Console.WriteLine("7. Exit");
             Console.WriteLine();
+            Console.WriteLine("Press 1 - 7 to choose what to do");
         }
 
         private static bool SelectMenu()
         {
-            InputValidation();
+            InputValidationChar();
 
             switch (inputKey)
             {
@@ -137,19 +138,28 @@ namespace Inlämningsuppgift_2
             throw new NotImplementedException();
         }
 
-        private static void InputValidation()
+        private static void InputValidationChar()
         {
             ConsoleKeyInfo input;
             do
             {
-                input = Console.ReadKey();
-            } while (input.KeyChar == 0);
-            bool success = int.TryParse(input.Key.ToString(), NumberStyles.Integer, null, out inputKey);
+                input = Console.ReadKey(true);
+            } while (!char.IsDigit(input.KeyChar));
+            bool success = int.TryParse(input.KeyChar.ToString(), NumberStyles.Integer, null, out inputKey);
         }
 
         private static void EmptyDict()
         {
-            throw new NotImplementedException();
+            Console.WriteLine();
+            Console.WriteLine("There are no items to evaluate, please enter an item first");
+            PressAnyKey();
+        }
+
+        private static void PressAnyKey()
+        {
+            Console.WriteLine();
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadKey(true);
         }
     }
 }
