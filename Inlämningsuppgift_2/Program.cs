@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 
-namespace Inlämningsuppgift_2
+namespace Inlämningsuppgift_2_2
 {
     class Program
     {
