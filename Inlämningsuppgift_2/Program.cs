@@ -18,7 +18,7 @@ namespace Inlämningsuppgift_2_2
         {
             try
             {
-            StartGame();
+            InitiateApp();
             RunApp();
             }
             catch (Exception)
@@ -27,7 +27,7 @@ namespace Inlämningsuppgift_2_2
             }
         }
 
-        private static void StartGame()
+        private static void InitiateApp()
         {
             Console.Title = "Fruit sallad";
             items = new Dictionary<string, int>(); //init dict & lists
@@ -40,7 +40,7 @@ namespace Inlämningsuppgift_2_2
             do
             {
             PrintMenu();
-            } while (SelectMenu() == true);
+            } while (SelectMenu());
         }
 
         private static void PrintMenu()
@@ -48,13 +48,13 @@ namespace Inlämningsuppgift_2_2
             Console.Clear();
             Console.WriteLine("Grocery list app");
             Console.WriteLine();
-            Console.WriteLine("1. Add item"); //must, kinda done
-            Console.WriteLine("2. Remove item"); //tbd, kinda done
-            Console.WriteLine("3. View list"); //done
-            Console.WriteLine("4. Modify item"); //tbd, kinda done
-            Console.WriteLine("5. Check cheapest"); //must, done
-            Console.WriteLine("6. Check most expensive"); //must, done
-            Console.WriteLine("7. Exit"); //done
+            Console.WriteLine("1. Add item");
+            Console.WriteLine("2. Remove item");
+            Console.WriteLine("3. View list");
+            Console.WriteLine("4. Modify item");
+            Console.WriteLine("5. Check cheapest");
+            Console.WriteLine("6. Check most expensive");
+            Console.WriteLine("7. Exit");
             Console.WriteLine();
             Console.WriteLine("Press 1 - 7 to choose what to do");
             Console.WriteLine();
