@@ -11,7 +11,6 @@ namespace Inlämningsuppgift_2
         static List<string> itemsKeyList;
         static List<int> itemsValueList;
 
-        //private static int enteredItems;
         private static int inputKey;
         private static string stopKey;
 
@@ -31,8 +30,7 @@ namespace Inlämningsuppgift_2
         private static void StartGame()
         {
             Console.Title = "Fruit sallad";
-            //init dict & lists
-            items = new Dictionary<string, int>();
+            items = new Dictionary<string, int>(); //init dict & lists
             itemsKeyList = new List<string>();
             itemsValueList = new List<int>();
         }
@@ -140,7 +138,6 @@ namespace Inlämningsuppgift_2
                         PressAnyKey();
                     }
                     Console.WriteLine("--------");
-
                 }
                 do
                 {
@@ -183,7 +180,6 @@ namespace Inlämningsuppgift_2
                         if (input >= 1 && input <= int.MaxValue) break;
                     }
                 } while (input < 1 || input > int.MaxValue);
-
             return input;
         }
 
@@ -227,7 +223,6 @@ namespace Inlämningsuppgift_2
                         }
                     }
                     if (entriesAmount != 0) break;
-
                 }
             } while (!(entriesAmount > 0 && entriesAmount < 10));
             return entriesAmount;
@@ -251,7 +246,6 @@ namespace Inlämningsuppgift_2
             input = InputValidationCharInt();
                 if (stopKey == "N")
                     return;
-                    //goto Stop;
             } while (input < 1 || input > items.Count);
 
             Console.WriteLine();
@@ -355,16 +349,13 @@ namespace Inlämningsuppgift_2
                 default:
                     break;
             }
-            
             Stop:;
         }
 
         private static void CheckMin()
         {
             int minValue = items.Values.Min();
-
-            var matches = items.Where(pair => pair.Value == minValue)
-                  .Select(pair => pair.Key);
+            var matches = items.Where(pair => pair.Value == minValue).Select(pair => pair.Key);
             string[] keys = matches.ToArray();
 
             if (keys.Length != 1)
@@ -377,9 +368,7 @@ namespace Inlämningsuppgift_2
         private static void CheckMax()
         {
             int maxValue = items.Values.Max();
-
-            var matches = items.Where(pair => pair.Value == maxValue)
-                  .Select(pair => pair.Key);
+            var matches = items.Where(pair => pair.Value == maxValue).Select(pair => pair.Key);
             string[] keys = matches.ToArray();
 
             if (keys.Length != 1)
