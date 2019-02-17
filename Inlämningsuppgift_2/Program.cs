@@ -42,12 +42,12 @@ namespace Inlämningsuppgift_2
             Console.Clear();
             Console.WriteLine("Grocery list app");
             Console.WriteLine();
-            Console.WriteLine("1. Add item"); //must
-            Console.WriteLine("2. Remove item"); //tbd
+            Console.WriteLine("1. Add item"); //must, kinda done
+            Console.WriteLine("2. Remove item"); //tbd, kinda done
             Console.WriteLine("3. View list"); //done
-            Console.WriteLine("4. Modify item"); //tbd 
-            Console.WriteLine("5. Check most inexpensive"); //must
-            Console.WriteLine("6. Check most expensive"); //must
+            Console.WriteLine("4. Modify item"); //tbd, kinda done
+            Console.WriteLine("5. Check cheapest"); //must, done
+            Console.WriteLine("6. Check most expensive"); //must, done
             Console.WriteLine("7. Exit"); //done
             Console.WriteLine();
             Console.WriteLine("Press 1 - 7 to choose what to do");
@@ -227,6 +227,7 @@ namespace Inlämningsuppgift_2
             itemsKeyList = items.Keys.ToList();
             itemsValueList = items.Values.ToList();
 
+            stopKey = "";
             int input;
             PrintDict();
             Console.WriteLine();
@@ -270,6 +271,10 @@ namespace Inlämningsuppgift_2
             itemsValueList = items.Values.ToList();
 
             int input;
+            int inputItem;
+            ConsoleKeyInfo inputKey;
+
+            stopKey = "";
             PrintDict();
             Console.WriteLine();
             if (items.Count == 1)
@@ -278,10 +283,10 @@ namespace Inlämningsuppgift_2
 
             do
             {
-                input = InputValidationCharInt();
+                inputItem = InputValidationCharInt();
                 if (stopKey == "N")
                     goto Stop;
-            } while (input < 1 || input > items.Count);
+            } while (inputItem < 1 || inputItem > items.Count);
 
             Console.WriteLine("Select what you would like to change or n to cancel");
             Console.WriteLine();
@@ -299,9 +304,29 @@ namespace Inlämningsuppgift_2
             switch (input)
             {
                 case 1:
-                //change name of item
+                    //change name of item
+                    items.Remove(itemsKeyList[inputItem - 1]);
+                    string changeName = ItemName();
+                    try
+                    {
+                        items.Add(changeName, itemsValueList[inputItem - 1]);
+                    }
+                    catch (ArgumentException)
+                    {
+                        Console.WriteLine($"The name '{changeName}' already exists, would you like to change the price of '{changeName}' instead? (press y for yes and n for no)");
+                        do
+                        {
+                            inputKey = Console.ReadKey(true);
+                        } while (inputKey.Key != ConsoleKey.N && inputKey.Key != ConsoleKey.Y);
+                        if (inputKey.Key == ConsoleKey.Y)
+                            items[changeName] = ItemValue();
+                        items.Add(itemsKeyList[inputItem - 1], itemsValueList[inputItem - 1]);
+                    }
+                    break;
                 case 2:
-                //change price of item
+                    //change price of item
+                    items[itemsKeyList[inputItem - 1]] = ItemValue();
+                    break;
                 default:
                     break;
             }
