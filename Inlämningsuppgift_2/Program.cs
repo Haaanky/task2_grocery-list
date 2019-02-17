@@ -11,18 +11,26 @@ namespace Inlämningsuppgift_2
         static List<string> itemsKeyList;
         static List<int> itemsValueList;
 
-        private static int enteredItems;
+        //private static int enteredItems;
         private static int inputKey;
         private static string stopKey;
 
         static void Main(string[] args)
         {
+            try
+            {
             StartGame();
             RunApp();
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Generic error message, please don't do that again it clearly didn't work ...");
+            }
         }
 
         private static void StartGame()
         {
+            Console.Title = "Fruit sallad";
             //init dict & lists
             items = new Dictionary<string, int>();
             itemsKeyList = new List<string>();
@@ -111,16 +119,16 @@ namespace Inlämningsuppgift_2
             }
         }
 
-
         private static void AddItems()
         {
-            int numberOfItems = AskForItems();
             ConsoleKeyInfo input;
 
             do
             {
+            int numberOfItems = AskForItems();
                 for (int i = 0; i < numberOfItems; i++)
                 {
+                    Console.WriteLine("--------");
                     try
                     {
                     items.Add(ItemName(), ItemValue());
@@ -131,6 +139,8 @@ namespace Inlämningsuppgift_2
                         Console.WriteLine("The name you entered already exists, please try again or use menu option 4. Change Item");
                         PressAnyKey();
                     }
+                    Console.WriteLine("--------");
+
                 }
                 do
                 {
@@ -138,6 +148,8 @@ namespace Inlämningsuppgift_2
                     Console.WriteLine("Would you like to add more? Press y for yes and n for no");
                     input = Console.ReadKey(true);
                 } while (input.Key != ConsoleKey.Y && input.Key != ConsoleKey.N);
+                Console.Clear();
+                PrintMenu();
             } while (input.Key == ConsoleKey.Y);
         }
 
@@ -149,9 +161,8 @@ namespace Inlämningsuppgift_2
 
         private static int ItemValue()
         {
-            int input = 0;
             Console.WriteLine("Price:");
-            bool success = int.TryParse(Console.ReadLine(), NumberStyles.Integer, null, out input);
+            bool success = int.TryParse(Console.ReadLine(), NumberStyles.Integer, null, out int input);
 
             if (input < 1 || input > int.MaxValue)
                 do
@@ -207,7 +218,7 @@ namespace Inlämningsuppgift_2
                     }
                     else if (i == 3)
                     {
-                        Console.WriteLine("Please press on a number between 1-9");
+                        Console.WriteLine("Please just press on a button with a number between 1-9 on it");
                         input = Console.ReadKey(true);
 
                         if (char.IsDigit(input.KeyChar))
@@ -226,7 +237,7 @@ namespace Inlämningsuppgift_2
         {
             itemsKeyList = items.Keys.ToList();
             itemsValueList = items.Values.ToList();
-
+            ConsoleKeyInfo inputYesOrNo = new ConsoleKeyInfo((char) ConsoleKey.A, ConsoleKey.A, false, false, false);
             stopKey = "";
             int input;
             PrintDict();
@@ -239,13 +250,24 @@ namespace Inlämningsuppgift_2
             {
             input = InputValidationCharInt();
                 if (stopKey == "N")
-                    goto Stop;
+                    return;
+                    //goto Stop;
             } while (input < 1 || input > items.Count);
 
+            Console.WriteLine();
+            Console.WriteLine($"Do you really want to delete {itemsKeyList[input - 1]}?");
+            Console.WriteLine("Press y for yes and n for no");
+            while (inputYesOrNo.Key != ConsoleKey.Y && inputYesOrNo.Key != ConsoleKey.N)
+            {
+                inputYesOrNo = Console.ReadKey(true);
+            }
+            if (inputYesOrNo.Key == ConsoleKey.N)
+                return;
+
             items.Remove(itemsKeyList[input - 1]);
+            Console.WriteLine("-------------------------");
             Console.WriteLine($"You successfully removed {itemsKeyList[input - 1]}");
             PressAnyKey();
-            Stop:;
         }
 
         private static void ViewList()
@@ -288,6 +310,9 @@ namespace Inlämningsuppgift_2
                     goto Stop;
             } while (inputItem < 1 || inputItem > items.Count);
 
+            Console.WriteLine("-------");
+            Console.WriteLine($"{itemsKeyList[inputItem - 1]} selected for editing");
+            Console.WriteLine();
             Console.WriteLine("Select what you would like to change or n to cancel");
             Console.WriteLine();
             Console.WriteLine("1. Name");
