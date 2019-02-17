@@ -8,8 +8,12 @@ namespace Inlämningsuppgift_2
     class Program
     {
         static Dictionary<string, int> items;
+        static List<string> itemsKeyList;
+        static List<int> itemsValueList;
+
         private static int enteredItems;
         private static int inputKey;
+        private static string stopKey;
 
         static void Main(string[] args)
         {
@@ -19,8 +23,10 @@ namespace Inlämningsuppgift_2
 
         private static void StartGame()
         {
-            //init dict
+            //init dict & lists
             items = new Dictionary<string, int>();
+            itemsKeyList = new List<string>();
+            itemsValueList = new List<int>();
         }
 
         private static void RunApp()
@@ -50,7 +56,7 @@ namespace Inlämningsuppgift_2
 
         private static bool SelectMenu()
         {
-            InputValidationChar();
+            InputValidationCharInt();
 
             switch (inputKey)
             {
@@ -71,7 +77,7 @@ namespace Inlämningsuppgift_2
                         EmptyDict();
                         return true;
                     }
-                    PrintDict();
+                    ViewList();
                     return true;
                 case 4:
                     if (items.Count == 0)
@@ -101,9 +107,10 @@ namespace Inlämningsuppgift_2
                     Environment.Exit(0);
                         return false;
                 default:
-                    return false;
+                    return true;
             }
         }
+
 
         private static void AddItems()
         {
@@ -217,7 +224,33 @@ namespace Inlämningsuppgift_2
 
         private static void RemoveItem()
         {
-            throw new NotImplementedException();
+            itemsKeyList = items.Keys.ToList();
+            itemsValueList = items.Values.ToList();
+
+            int input;
+            PrintDict();
+            Console.WriteLine();
+            if (items.Count == 1)
+                Console.WriteLine("Choose the item you would like to remove by pressing 1 or n to cancel");
+            else Console.WriteLine($"Choose the item you would like to remove by pressing 1 - {items.Count} or n to cancel");
+
+            do
+            {
+            input = InputValidationCharInt();
+                if (stopKey == "N")
+                    goto Stop;
+            } while (input < 1 || input > items.Count);
+
+            items.Remove(itemsKeyList[input - 1]);
+            Console.WriteLine($"You successfully removed {itemsKeyList[input - 1]}");
+            PressAnyKey();
+            Stop:;
+        }
+
+        private static void ViewList()
+        {
+            PrintDict();
+            PressAnyKey();
         }
 
         private static void PrintDict()
@@ -229,12 +262,51 @@ namespace Inlämningsuppgift_2
                 Console.Write($"{i}. ");
                 Console.WriteLine("{0}, {1}kr", kvp.Key, kvp.Value);
             }
-            PressAnyKey();
         }
 
         private static void ChangeItem()
         {
-            throw new NotImplementedException();
+            itemsKeyList = items.Keys.ToList();
+            itemsValueList = items.Values.ToList();
+
+            int input;
+            PrintDict();
+            Console.WriteLine();
+            if (items.Count == 1)
+                Console.WriteLine("Choose the item you would like to edit by pressing 1 or n to cancel");
+            else Console.WriteLine($"Choose the item you would like to edit by pressing 1 - {items.Count} or n to cancel");
+
+            do
+            {
+                input = InputValidationCharInt();
+                if (stopKey == "N")
+                    goto Stop;
+            } while (input < 1 || input > items.Count);
+
+            Console.WriteLine("Select what you would like to change or n to cancel");
+            Console.WriteLine();
+            Console.WriteLine("1. Name");
+            Console.WriteLine("2. Price");
+            Console.WriteLine();
+
+            do
+            {
+                input = InputValidationCharInt();
+                if (stopKey == "N")
+                    goto Stop;
+            } while (input < 1 || input > 2);
+
+            switch (input)
+            {
+                case 1:
+                //change name of item
+                case 2:
+                //change price of item
+                default:
+                    break;
+            }
+            
+            Stop:;
         }
 
         private static void CheckMin()
@@ -267,14 +339,20 @@ namespace Inlämningsuppgift_2
             PressAnyKey();
         }
 
-        private static void InputValidationChar()
+        private static int InputValidationCharInt()
         {
             ConsoleKeyInfo input;
             do
             {
                 input = Console.ReadKey(true);
+                if (input.Key == ConsoleKey.N)
+                {
+                    stopKey = "N";
+                    break;
+                }
             } while (!char.IsDigit(input.KeyChar));
             bool success = int.TryParse(input.KeyChar.ToString(), NumberStyles.Integer, null, out inputKey);
+            return inputKey;
         }
 
         private static void EmptyDict()
